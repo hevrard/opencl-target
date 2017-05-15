@@ -20,7 +20,7 @@ retrieve the device id:
 
         ...
 
-        cl_device_id = opencl_target_device_id();
+        cl_device_id device_id = opencl_target_device_id();
 
     }
 
