@@ -23,3 +23,5 @@ retrieve the device id:
         cl_device_id = opencl_target_device_id();
 
     }
+
+See the included `main.c` and `Makefile` for a minimal example.
