@@ -1,8 +1,6 @@
 # opencl-target
 OpenCL execution target selector
 
-## What it enables
-
 One can specify the OpenCL target using the `OPENCL_TARGET_DEVICE`
 environment variable, e.g.:
 
@@ -10,15 +8,16 @@ environment variable, e.g.:
     $ export OPENCL_TARGET_DEVICE
     $ ./your-opencl-application   # will target the above device
 
-The OpenCL platforms are searched for a device whose *version* string
-_contains_ the value of `OPENCL_TARGET_DEVICE`. If
-`OPENCL_TARGET_DEVICE`, it looks for a match of the empty string, thus
-it will return the first device encountered.
+The OpenCL platforms are searched for a device whose *VERSION*
+(`CL_DEVICE_VERSION`) string *contains* the value of
+`OPENCL_TARGET_DEVICE`. If `OPENCL_TARGET_DEVICE` is unset, it is
+equivalent to having its value set as an empty string: the first device
+encountered will be used.
 
 ## How to use
 
-To use in your code, just include the header, and use its primitive to
-retrieve the device id:
+Include the `opencl_target.h` header, and use the
+`opencl_target_device_id(void)` primitive to retrieve the device ID:
 
     #include "opencl_target.h"
 
