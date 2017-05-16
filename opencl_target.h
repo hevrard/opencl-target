@@ -4,6 +4,10 @@
 #ifndef __OPENCL_TARGET__
 #define __OPENCL_TARGET__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <CL/cl.h>
 #include <stdlib.h> // getenv, abort
 #include <string.h> // strstr
@@ -88,4 +92,8 @@ opencl_target_exit:
 #undef OPENCL_TARGET_CL_CALL
 
 #endif // __OPENCL_TARGET__
+
+#ifdef __cplusplus
+}
+#endif
 //-----------------------------------------------------------------------------
