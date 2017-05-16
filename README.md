@@ -1,7 +1,6 @@
 # opencl_target
-OpenCL execution target selector
+OpenCL execution target selector.
 
-## Goal
 One can specify the OpenCL target using the `OPENCL_TARGET_DEVICE`
 environment variable, e.g.:
 
@@ -28,3 +27,10 @@ Include the `opencl_target.h` header, and use the
     }
 
 See the included `main.c` and `Makefile` for a minimal example.
+
+## Where to get the version strings
+
+You can use the `clinfo` tool to get an overview of the OpenCL platform
+and devices available on a machine. Remember, opencl_target will search
+for a substring inside the device version string, which so far seems to
+contains enough information to uniquely identify a device.
