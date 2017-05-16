@@ -1,6 +1,7 @@
-# opencl-target
+# opencl_target
 OpenCL execution target selector
 
+## Goal
 One can specify the OpenCL target using the `OPENCL_TARGET_DEVICE`
 environment variable, e.g.:
 
