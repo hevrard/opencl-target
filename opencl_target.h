@@ -22,12 +22,12 @@ extern "C" {
         }                                                               \
     } while (0)
 
-cl_device_id opencl_target_device_id(void)
+void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id)
 {
     cl_platform_id *platforms = NULL;
     cl_device_id *devices = NULL;
     char *device_version = NULL;
-    cl_device_id device_id = NULL;
+    *device_id = NULL;
 
     char *envname;
     envname = getenv("OPENCL_TARGET_DEVICE");
@@ -45,21 +45,21 @@ cl_device_id opencl_target_device_id(void)
     OPENCL_TARGET_CL_CALL (clGetPlatformIDs, num_platforms, platforms, NULL);
 
     for (cl_uint i = 0; i < num_platforms; i++) {
-        cl_platform_id platform_id = platforms[i];
+        *platform_id = platforms[i];
 
         cl_uint num_devices = 0;
-        OPENCL_TARGET_CL_CALL (clGetDeviceIDs, platform_id, CL_DEVICE_TYPE_ALL, 0, NULL, &num_devices);
+        OPENCL_TARGET_CL_CALL (clGetDeviceIDs, *platform_id, CL_DEVICE_TYPE_ALL, 0, NULL, &num_devices);
         if (num_devices <= 0) {
             continue;
         }
 
         devices = realloc(devices, num_devices * sizeof(cl_device_id));
-        OPENCL_TARGET_CL_CALL (clGetDeviceIDs, platform_id, CL_DEVICE_TYPE_ALL, num_devices, devices, NULL);
+        OPENCL_TARGET_CL_CALL (clGetDeviceIDs, *platform_id, CL_DEVICE_TYPE_ALL, num_devices, devices, NULL);
 
         for (cl_uint j = 0; j < num_devices; j++) {
-            device_id = devices[j];
+            *device_id = devices[j];
             size_t device_version_size = 0;
-            OPENCL_TARGET_CL_CALL (clGetDeviceInfo, device_id, CL_DEVICE_VERSION, 0, NULL, &device_version_size);
+            OPENCL_TARGET_CL_CALL (clGetDeviceInfo, *device_id, CL_DEVICE_VERSION, 0, NULL, &device_version_size);
             if (device_version_size <= 0) {
                 continue;
             }
@@ -67,7 +67,7 @@ cl_device_id opencl_target_device_id(void)
             if (device_version == NULL) {
                 goto opencl_target_exit;
             }
-            OPENCL_TARGET_CL_CALL (clGetDeviceInfo, device_id, CL_DEVICE_VERSION, device_version_size, device_version, NULL);
+            OPENCL_TARGET_CL_CALL (clGetDeviceInfo, *device_id, CL_DEVICE_VERSION, device_version_size, device_version, NULL);
             int name_match = ( strstr(device_version, envname) != NULL );
             free(device_version);
             device_version = NULL;
@@ -78,15 +78,13 @@ cl_device_id opencl_target_device_id(void)
     }
 
     // reaching here means no device was found;
-    device_id = NULL;
+    *device_id = NULL;
 
 opencl_target_exit:
 
     if (platforms      != NULL) { free(platforms); }
     if (devices        != NULL) { free(devices); }
     if (device_version != NULL) { free(device_version); }
-
-    return device_id;
 }
 
 #undef OPENCL_TARGET_CL_CALL

@@ -6,7 +6,10 @@
 
 int main(int argc, char **argv)
 {
-    cl_device_id id = opencl_target_device_id();
-    printf("Device id: %x\n", id);
+    cl_platform_id platform;
+    cl_device_id device;
+    opencl_target_init(&platform, &device);
+    printf("Platform id: %x\n", platform);
+    printf("Device id: %x\n", device);
     return 0;
 }
