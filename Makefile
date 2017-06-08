@@ -1,4 +1,7 @@
+CC=gcc
+CFLAGS=-Wall -pedantic
+
 all: main
 
 main: main.c opencl_target.h
-	cc -I. -o main main.c -lOpenCL
+	$(CC) $(CFLAGS) -I. -o main main.c -lOpenCL

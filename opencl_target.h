@@ -22,6 +22,8 @@ extern "C" {
         }                                                               \
     } while (0)
 
+void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id);
+
 inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id)
 {
     cl_platform_id *platforms = NULL;
@@ -32,7 +34,7 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
     char *envname;
     envname = getenv("OPENCL_TARGET_DEVICE");
     if (envname == NULL) {
-        envname = "";
+        envname = (char *)"";   // cast to please c++ compiler
     }
 
     cl_uint num_platforms = 0;
@@ -41,7 +43,7 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
         goto opencl_target_exit;
     }
 
-    platforms = malloc(num_platforms * sizeof(cl_platform_id));
+    platforms = (cl_platform_id *) malloc(num_platforms * sizeof(cl_platform_id));
     OPENCL_TARGET_CL_CALL (clGetPlatformIDs, num_platforms, platforms, NULL);
 
     for (cl_uint i = 0; i < num_platforms; i++) {
@@ -53,7 +55,7 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
             continue;
         }
 
-        devices = realloc(devices, num_devices * sizeof(cl_device_id));
+        devices = (cl_device_id *) realloc(devices, num_devices * sizeof(cl_device_id));
         OPENCL_TARGET_CL_CALL (clGetDeviceIDs, *platform_id, CL_DEVICE_TYPE_ALL, num_devices, devices, NULL);
 
         for (cl_uint j = 0; j < num_devices; j++) {
@@ -63,7 +65,7 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
             if (device_version_size <= 0) {
                 continue;
             }
-            device_version = realloc(device_version, device_version_size);
+            device_version = (char *) realloc(device_version, device_version_size);
             if (device_version == NULL) {
                 goto opencl_target_exit;
             }
