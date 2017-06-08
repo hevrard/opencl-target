@@ -22,7 +22,7 @@ extern "C" {
         }                                                               \
     } while (0)
 
-void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id)
+inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id)
 {
     cl_platform_id *platforms = NULL;
     cl_device_id *devices = NULL;
