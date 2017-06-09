@@ -8,7 +8,6 @@
 extern "C" {
 #endif
 
-#include <CL/cl.h>
 #include <stdlib.h> // getenv, abort
 #include <string.h> // strstr
 #include <stdio.h>  // printf

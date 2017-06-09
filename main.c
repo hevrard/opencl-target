@@ -1,3 +1,9 @@
+#ifdef __APPLE__
+  #include <OpenCL/OpenCL.h>
+#else
+  #include <CL/cl.h>
+#endif
+
 #include "opencl_target.h"
 
 enum { STRLEN = 128 };

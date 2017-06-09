@@ -26,6 +26,8 @@ Include the `opencl_target.h` header, and use the
 *device_id)` primitive to retrieve both platform and device id:
 
 ```C
+#include <CL/cl.h> // Must be included before
+
 #include "opencl_target.h"
 
 int main() {
