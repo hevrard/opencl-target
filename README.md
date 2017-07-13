@@ -46,3 +46,9 @@ You can use the `clinfo` tool to get an overview of the OpenCL platform
 and devices available on a machine. Remember, opencl_target will search
 for a substring inside the device version string, which so far seems to
 contains enough information to uniquely identify a device.
+
+# TODO
+
+ - test on Mac
+
+ - add a primitive where the target string is passed as argument
