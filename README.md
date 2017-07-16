@@ -9,7 +9,8 @@ will return the first platform & device pair where the **device
 version** string **contains** the target string.  This target string can
 be passed explicitely, or retrieved from the `OPENCL_TARGET` environment
 variable.
-# API
+
+## API
 
 ### `opencl_target_str()`
 
@@ -33,11 +34,11 @@ Behave similarly to `opencl_target_str()`, passing the value of the
 environment variable is not set, pass the empty string, which results in
 whichever device that comes first to be selected.
 
-# Example
+## Example
 
 See the included `main.c` and associated `Makefile` for a small example.
 
-## Writing a program using opencl_target
+### Writing a program using opencl_target
 
 Include the `opencl_target.h` header, and use the
 `opencl_target_env(cl_platform_id *platform_id, cl_device_id
@@ -65,7 +66,7 @@ int main() {
 Alternatively, you can use the `opencl_target_str()` to pass the target
 string explicitely.
 
-## Executing this program on a particular OpenCL target
+### Executing this program on a particular OpenCL target
 
 Specify the OpenCL target using the `OPENCL_TARGET` environment
 variable. For instance:
@@ -96,6 +97,6 @@ this device version string contains enough information to uniquely
 identify a device. If you have a counter example, please let me know.
 
 
-# TODO
+## TODO
 
  - test on Mac, Windows
