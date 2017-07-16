@@ -4,10 +4,11 @@ Header library that makes selecting an OpenCL target easier.
 
 Tired of passing platform and device IDs to your OpenCL programs? This
 library makes it easy to select a platform & device pair from a single
-string. This string is called the *target string*, and the library will
-return the first platform & device pair where the *device version*
-string *contains* the target string.  This target string can be passed
-explicitely, or retrieved from the `OPENCL_TARGET` environment variable.
+string. This string is called the **target string**, and the library
+will return the first platform & device pair where the **device
+version** string **contains** the target string.  This target string can
+be passed explicitely, or retrieved from the `OPENCL_TARGET` environment
+variable.
 
 # Example
 
@@ -74,9 +75,10 @@ identify a device. If you have a counter example, please let me know.
 
 ## API
 
+### `opencl_target_str()`
+
 ```C
-void opencl_target_str(cl_platform_id *platform_id, cl_device_id
-*device_id, char *target)
+void opencl_target_str(cl_platform_id *platform_id, cl_device_id *device_id, char *target)
 ```
 
 Look for an OpenCL device version string which contains `target`. If
@@ -84,11 +86,13 @@ found, set `platform_id` and `device_id` accordingly. If not found, set
 both `platform_id` and `device_id` to `NULL`. In case of internal error,
 print an error message to standard output and abort.
 
+### `opencl_target_env()`
+
 ```C
 void opencl_target_env(cl_platform_id *platform_id, cl_device_id *device_id)
 ```
 
-Behave similarly to `opencl_target_str`, passing the value of the
+Behave similarly to `opencl_target_str()`, passing the value of the
 `OPENCL_TARGET` environment variable as the target string. If this
 environment variable is not set, pass the empty string, which results in
 whichever device that comes first to be selected.
