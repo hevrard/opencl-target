@@ -21,20 +21,14 @@ extern "C" {
         }                                                               \
     } while (0)
 
-void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id);
+void opencl_target_str(cl_platform_id *platform_id, cl_device_id *device_id, char *target);
 
-inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device_id)
+inline void opencl_target_str(cl_platform_id *platform_id, cl_device_id *device_id, char *target)
 {
     cl_platform_id *platforms = NULL;
     cl_device_id *devices = NULL;
     char *device_version = NULL;
     *device_id = NULL;
-
-    char *envname;
-    envname = getenv("OPENCL_TARGET_DEVICE");
-    if (envname == NULL) {
-        envname = (char *)"";   // cast to please c++ compiler
-    }
 
     cl_uint num_platforms = 0;
     OPENCL_TARGET_CL_CALL (clGetPlatformIDs, 0, NULL, &num_platforms);
@@ -69,7 +63,7 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
                 goto opencl_target_exit;
             }
             OPENCL_TARGET_CL_CALL (clGetDeviceInfo, *device_id, CL_DEVICE_VERSION, device_version_size, device_version, NULL);
-            int name_match = ( strstr(device_version, envname) != NULL );
+            int name_match = (strstr(device_version, target) != NULL);
             free(device_version);
             device_version = NULL;
             if (name_match) {
@@ -80,12 +74,25 @@ inline void opencl_target_init(cl_platform_id *platform_id, cl_device_id *device
 
     // reaching here means no device was found;
     *device_id = NULL;
+    *platform_id = NULL;
 
 opencl_target_exit:
 
     if (platforms      != NULL) { free(platforms); }
     if (devices        != NULL) { free(devices); }
     if (device_version != NULL) { free(device_version); }
+}
+
+void opencl_target_env(cl_platform_id *platform_id, cl_device_id *device_id);
+
+inline void opencl_target_env(cl_platform_id *platform_id, cl_device_id *device_id)
+{
+    char *target;
+    target = getenv("OPENCL_TARGET");
+    if (target == NULL) {
+        target = (char *)"";   // cast to please c++ compiler
+    }
+    opencl_target_str(platform_id, device_id, target);
 }
 
 #undef OPENCL_TARGET_CL_CALL
