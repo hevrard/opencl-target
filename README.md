@@ -9,8 +9,33 @@ will return the first platform & device pair where the **device
 version** string **contains** the target string.  This target string can
 be passed explicitely, or retrieved from the `OPENCL_TARGET` environment
 variable.
+# API
+
+### `opencl_target_str()`
+
+```C
+void opencl_target_str(cl_platform_id *platform_id, cl_device_id *device_id, char *target)
+```
+
+Look for an OpenCL device version string which contains `target`. If
+found, set `platform_id` and `device_id` accordingly. If not found, set
+both `platform_id` and `device_id` to `NULL`. In case of internal error,
+print an error message to standard output and abort.
+
+### `opencl_target_env()`
+
+```C
+void opencl_target_env(cl_platform_id *platform_id, cl_device_id *device_id)
+```
+
+Behave similarly to `opencl_target_str()`, passing the value of the
+`OPENCL_TARGET` environment variable as the target string. If this
+environment variable is not set, pass the empty string, which results in
+whichever device that comes first to be selected.
 
 # Example
+
+See the included `main.c` and associated `Makefile` for a small example.
 
 ## Writing a program using opencl_target
 
@@ -37,8 +62,7 @@ int main() {
 }
 ```
 
-Alternatively, you can use the `opencl_target_str(cl_platform_id
-*platform_id, cl_device_id *device_id, char* target)` to pass the target
+Alternatively, you can use the `opencl_target_str()` to pass the target
 string explicitely.
 
 ## Executing this program on a particular OpenCL target
@@ -63,8 +87,6 @@ If `OPENCL_TARGET` environment variable is unset, it is equivalent to
 having its value set as an empty string: any device will match, so the
 first device encountered will be used.
 
-See also the included `main.c` and `Makefile` for a minimal example.
-
 ## Where to get the version strings
 
 You can use the `clinfo` tool to get an overview of the OpenCL platform
@@ -73,29 +95,6 @@ for a substring inside the device version string. So far, it seems like
 this device version string contains enough information to uniquely
 identify a device. If you have a counter example, please let me know.
 
-## API
-
-### `opencl_target_str()`
-
-```C
-void opencl_target_str(cl_platform_id *platform_id, cl_device_id *device_id, char *target)
-```
-
-Look for an OpenCL device version string which contains `target`. If
-found, set `platform_id` and `device_id` accordingly. If not found, set
-both `platform_id` and `device_id` to `NULL`. In case of internal error,
-print an error message to standard output and abort.
-
-### `opencl_target_env()`
-
-```C
-void opencl_target_env(cl_platform_id *platform_id, cl_device_id *device_id)
-```
-
-Behave similarly to `opencl_target_str()`, passing the value of the
-`OPENCL_TARGET` environment variable as the target string. If this
-environment variable is not set, pass the empty string, which results in
-whichever device that comes first to be selected.
 
 # TODO
 
